@@ -55,6 +55,8 @@ export function useInventory() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // localStorage hydration requires setState in effect (SSR-safe pattern)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setItems(loadItems());
     setCategories(loadCategories());
     setIsLoaded(true);

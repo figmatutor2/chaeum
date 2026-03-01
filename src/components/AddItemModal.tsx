@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { Item, Category } from "@/lib/types";
 
@@ -39,27 +39,15 @@ export default function AddItemModal({
   onDelete,
   onClose,
 }: AddItemModalProps) {
-  const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [threshold, setThreshold] = useState(0);
-  const [purchaseUrl, setPurchaseUrl] = useState("");
-  const [categoryId, setCategoryId] = useState(defaultCategoryId || categories[0]?.id || "");
-  const [icon, setIcon] = useState(iconOptions[0].path);
-  const [emoji, setEmoji] = useState("📦");
+  const [name, setName] = useState(editItem?.name ?? "");
+  const [quantity, setQuantity] = useState(editItem?.quantity ?? 1);
+  const [threshold, setThreshold] = useState(editItem?.threshold ?? 0);
+  const [purchaseUrl, setPurchaseUrl] = useState(editItem?.purchaseUrl ?? "");
+  const [categoryId, setCategoryId] = useState(editItem?.categoryId || defaultCategoryId || categories[0]?.id || "");
+  const [icon, setIcon] = useState(editItem?.icon || iconOptions[0].path);
+  const [emoji] = useState(editItem?.emoji || "📦");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (editItem) {
-      setName(editItem.name);
-      setQuantity(editItem.quantity);
-      setThreshold(editItem.threshold);
-      setPurchaseUrl(editItem.purchaseUrl);
-      setCategoryId(editItem.categoryId);
-      setIcon(editItem.icon || iconOptions[0].path);
-      setEmoji(editItem.emoji || "📦");
-    }
-  }, [editItem]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
