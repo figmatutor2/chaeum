@@ -41,7 +41,9 @@ export default function AddItemModal({
 }: AddItemModalProps) {
   const [name, setName] = useState(editItem?.name ?? "");
   const [quantity, setQuantity] = useState(editItem?.quantity ?? 1);
+  const [quantityText, setQuantityText] = useState(String(editItem?.quantity ?? 1));
   const [threshold, setThreshold] = useState(editItem?.threshold ?? 0);
+  const [thresholdText, setThresholdText] = useState(String(editItem?.threshold ?? 0));
   const [purchaseUrl, setPurchaseUrl] = useState(editItem?.purchaseUrl ?? "");
   const [categoryId, setCategoryId] = useState(editItem?.categoryId || defaultCategoryId || categories[0]?.id || "");
   const [icon, setIcon] = useState(editItem?.icon || iconOptions[0].path);
@@ -187,23 +189,93 @@ export default function AddItemModal({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-semibold text-gray-500 mb-1 block">현재 수량</label>
-              <input
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value) || 0))}
-                min={0}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-200 focus:border-teal-400 transition-all"
-              />
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const v = Math.max(0, quantity - 1);
+                    setQuantity(v);
+                    setQuantityText(String(v));
+                  }}
+                  className="w-10 h-10 rounded-xl bg-gray-100 text-gray-500 flex items-center justify-center text-lg font-bold hover:bg-gray-200 active:scale-95 transition-all shrink-0"
+                >
+                  −
+                </button>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={quantityText}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9]/g, "");
+                    setQuantityText(raw);
+                    if (raw !== "") setQuantity(parseInt(raw));
+                  }}
+                  onBlur={() => {
+                    if (quantityText === "") {
+                      setQuantity(0);
+                      setQuantityText("0");
+                    }
+                  }}
+                  className="flex-1 min-w-0 px-2 py-2.5 rounded-xl border border-gray-200 text-sm text-center focus:outline-none focus:ring-2 focus:ring-teal-200 focus:border-teal-400 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const v = quantity + 1;
+                    setQuantity(v);
+                    setQuantityText(String(v));
+                  }}
+                  className="w-10 h-10 rounded-xl bg-gray-100 text-gray-500 flex items-center justify-center text-lg font-bold hover:bg-gray-200 active:scale-95 transition-all shrink-0"
+                >
+                  +
+                </button>
+              </div>
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 mb-1 block">알림 기준</label>
-              <input
-                type="number"
-                value={threshold}
-                onChange={(e) => setThreshold(Math.max(0, parseInt(e.target.value) || 0))}
-                min={0}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-200 focus:border-teal-400 transition-all"
-              />
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const v = Math.max(0, threshold - 1);
+                    setThreshold(v);
+                    setThresholdText(String(v));
+                  }}
+                  className="w-10 h-10 rounded-xl bg-gray-100 text-gray-500 flex items-center justify-center text-lg font-bold hover:bg-gray-200 active:scale-95 transition-all shrink-0"
+                >
+                  −
+                </button>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={thresholdText}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9]/g, "");
+                    setThresholdText(raw);
+                    if (raw !== "") setThreshold(parseInt(raw));
+                  }}
+                  onBlur={() => {
+                    if (thresholdText === "") {
+                      setThreshold(0);
+                      setThresholdText("0");
+                    }
+                  }}
+                  className="flex-1 min-w-0 px-2 py-2.5 rounded-xl border border-gray-200 text-sm text-center focus:outline-none focus:ring-2 focus:ring-teal-200 focus:border-teal-400 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const v = threshold + 1;
+                    setThreshold(v);
+                    setThresholdText(String(v));
+                  }}
+                  className="w-10 h-10 rounded-xl bg-gray-100 text-gray-500 flex items-center justify-center text-lg font-bold hover:bg-gray-200 active:scale-95 transition-all shrink-0"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
 
