@@ -9,8 +9,8 @@ interface HeaderProps {
 
 export default function Header({ avatarUrl, onProfileClick }: HeaderProps) {
   return (
-    <header className="pt-6 pb-2 px-6">
-      <div className="max-w-3xl mx-auto flex items-center justify-between">
+    <header className="pt-6 pb-2">
+      <div className="max-w-3xl mx-auto px-6 flex items-center justify-between">
         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
           chaeum
         </h1>

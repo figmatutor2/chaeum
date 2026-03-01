@@ -14,8 +14,8 @@ export default function CategoryTabs({
   onSelect,
 }: CategoryTabsProps) {
   return (
-    <nav className="px-6 pt-5 pb-2">
-      <div className="max-w-3xl mx-auto flex gap-2 overflow-x-auto scrollbar-hide">
+    <nav className="pt-5 pb-2">
+      <div className="max-w-3xl mx-auto px-6 flex gap-2 overflow-x-auto scrollbar-hide">
         {categories.map((cat) => (
           <button
             key={cat.id}

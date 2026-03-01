@@ -63,7 +63,7 @@ export default function ItemCard({
   };
 
   return (
-    <div className="bg-white rounded-3xl p-5 shadow-sm relative flex flex-col items-center transition-all hover:shadow-md">
+    <div className="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.75rem)] bg-white rounded-3xl p-5 shadow-sm relative flex flex-col items-center transition-all hover:shadow-md">
       {/* 설정 아이콘 */}
       <button
         onClick={() => onEdit(item)}

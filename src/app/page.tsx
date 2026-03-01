@@ -65,7 +65,7 @@ export default function Home() {
       />
 
       <main className="max-w-3xl mx-auto px-6 pt-5 pb-24">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="flex flex-wrap gap-4">
           {currentItems.map((item) => (
             <ItemCard
               key={item.id}
