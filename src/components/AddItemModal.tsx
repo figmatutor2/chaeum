@@ -302,6 +302,13 @@ export default function AddItemModal({
             {editItem ? "저장하기" : "추가하기"}
           </button>
 
+          <button
+            onClick={onClose}
+            className="w-full py-3 text-gray-500 bg-gray-100 rounded-2xl font-medium text-sm hover:bg-gray-200 active:scale-[0.98] transition-all"
+          >
+            취소
+          </button>
+
           {editItem && !showDeleteConfirm && (
             <button
               onClick={() => setShowDeleteConfirm(true)}
@@ -319,13 +326,6 @@ export default function AddItemModal({
               정말 삭제할까요?
             </button>
           )}
-
-          <button
-            onClick={onClose}
-            className="w-full py-3 text-gray-500 rounded-2xl font-medium text-sm hover:bg-gray-50 active:scale-[0.98] transition-all"
-          >
-            취소
-          </button>
         </div>
       </div>
     </div>
