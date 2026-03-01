@@ -38,7 +38,7 @@ export default function PurchaseModal({ item, onClose }: PurchaseModalProps) {
           {item.purchaseUrl ? (
             <button
               onClick={handlePurchase}
-              className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-semibold text-sm hover:bg-teal-600 active:scale-[0.98] transition-all shadow-lg shadow-teal-200"
+              className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-semibold text-sm hover:bg-teal-600 active:scale-[0.98] transition-all"
             >
               주문하러 가기
             </button>

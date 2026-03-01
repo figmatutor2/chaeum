@@ -225,7 +225,7 @@ export default function AddItemModal({
           <button
             onClick={handleSubmit}
             disabled={!name.trim()}
-            className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-semibold text-sm hover:bg-teal-600 active:scale-[0.98] transition-all shadow-lg shadow-teal-200 disabled:opacity-40 disabled:shadow-none"
+            className="w-full py-3.5 bg-teal-500 text-white rounded-2xl font-semibold text-sm hover:bg-teal-600 active:scale-[0.98] transition-all disabled:opacity-40 disabled:shadow-none"
           >
             {editItem ? "저장하기" : "추가하기"}
           </button>

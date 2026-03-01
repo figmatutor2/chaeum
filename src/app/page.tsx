@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { Item } from "@/lib/types";
-import { useInventory } from "@/lib/storage";
+import { useInventory, useProfile } from "@/lib/storage";
+import { useAuth } from "@/lib/auth";
 import Header from "@/components/Header";
 import CategoryTabs from "@/components/CategoryTabs";
 import ItemCard from "@/components/ItemCard";
 import PurchaseModal from "@/components/PurchaseModal";
 import AddItemModal from "@/components/AddItemModal";
+import FloatingAddButton from "@/components/FloatingAddButton";
+import ProfileModal from "@/components/ProfileModal";
 
 export default function Home() {
   const {
@@ -21,27 +24,39 @@ export default function Home() {
     getItemsByCategory,
   } = useInventory();
 
+  const { profile, isProfileLoaded, updateProfile, logout } = useProfile();
+  const { user, loading: authLoading, signInWithGoogle, signOut } = useAuth();
+
   const [activeCategory, setActiveCategory] = useState("bath");
   const [purchaseItem, setPurchaseItem] = useState<Item | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editItem, setEditItem] = useState<Item | null>(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
-  if (!isLoaded) {
+  if (!isLoaded || !isProfileLoaded || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">채움</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">chaeum</h1>
           <p className="text-sm text-gray-400">불러오는 중...</p>
         </div>
       </div>
     );
   }
 
+  const handleLogout = async () => {
+    await signOut();
+    logout();
+  };
+
   const currentItems = getItemsByCategory(activeCategory);
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      <Header onAddItem={() => { setEditItem(null); setShowAddModal(true); }} />
+      <Header
+        avatarUrl={profile.avatarUrl}
+        onProfileClick={() => setShowProfileModal(true)}
+      />
 
       <CategoryTabs
         categories={categories}
@@ -49,7 +64,7 @@ export default function Home() {
         onSelect={setActiveCategory}
       />
 
-      <main className="max-w-3xl mx-auto px-6 py-5">
+      <main className="max-w-3xl mx-auto px-6 pt-5 pb-24">
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {currentItems.map((item) => (
             <ItemCard
@@ -64,9 +79,15 @@ export default function Home() {
               onTriggerPurchase={setPurchaseItem}
             />
           ))}
-
         </div>
       </main>
+
+      <FloatingAddButton
+        onClick={() => {
+          setEditItem(null);
+          setShowAddModal(true);
+        }}
+      />
 
       {purchaseItem && (
         <PurchaseModal
@@ -87,6 +108,17 @@ export default function Home() {
             setShowAddModal(false);
             setEditItem(null);
           }}
+        />
+      )}
+
+      {showProfileModal && (
+        <ProfileModal
+          profile={profile}
+          firebaseUser={user}
+          onSave={updateProfile}
+          onGoogleLogin={signInWithGoogle}
+          onLogout={handleLogout}
+          onClose={() => setShowProfileModal(false)}
         />
       )}
     </div>

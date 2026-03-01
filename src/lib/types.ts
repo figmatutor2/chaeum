@@ -16,3 +16,11 @@ export interface Category {
 }
 
 export type ItemStatus = "sufficient" | "low" | "out";
+
+export interface UserProfile {
+  name: string;
+  avatarUrl: string;
+  isLoggedIn: boolean;
+  uid?: string;
+  email?: string;
+}

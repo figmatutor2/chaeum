@@ -1,11 +1,18 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Item, Category, ItemStatus } from "./types";
+import { Item, Category, ItemStatus, UserProfile } from "./types";
 import { defaultCategories, defaultItems } from "./initialData";
 
 const ITEMS_KEY = "eum-items";
 const CATEGORIES_KEY = "eum-categories";
+const PROFILE_KEY = "eum-profile";
+
+const defaultProfile: UserProfile = {
+  name: "우리집",
+  avatarUrl: "/character-head.png",
+  isLoggedIn: false,
+};
 
 function loadItems(): Item[] {
   if (typeof window === "undefined") return defaultItems;
@@ -37,6 +44,23 @@ function loadCategories(): Category[] {
 
 function saveItems(items: Item[]) {
   localStorage.setItem(ITEMS_KEY, JSON.stringify(items));
+}
+
+function loadProfile(): UserProfile {
+  if (typeof window === "undefined") return defaultProfile;
+  const stored = localStorage.getItem(PROFILE_KEY);
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return defaultProfile;
+    }
+  }
+  return defaultProfile;
+}
+
+function saveProfile(profile: UserProfile) {
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
 }
 
 export function getItemStatus(item: Item): ItemStatus {
@@ -132,4 +156,31 @@ export function useInventory() {
     deleteItem,
     getItemsByCategory,
   };
+}
+
+export function useProfile() {
+  const [profile, setProfile] = useState<UserProfile>(defaultProfile);
+  const [isProfileLoaded, setIsProfileLoaded] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setProfile(loadProfile());
+    setIsProfileLoaded(true);
+  }, []);
+
+  const updateProfile = useCallback(
+    (updates: Partial<UserProfile>) => {
+      const newProfile = { ...profile, ...updates };
+      setProfile(newProfile);
+      saveProfile(newProfile);
+    },
+    [profile]
+  );
+
+  const logout = useCallback(() => {
+    setProfile(defaultProfile);
+    localStorage.removeItem(PROFILE_KEY);
+  }, []);
+
+  return { profile, isProfileLoaded, updateProfile, logout };
 }
